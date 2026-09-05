@@ -10,7 +10,7 @@ What is the current grid load and renewable contribution by zone, and what will 
 
 The solution is **Kappa-oriented** because the primary source of truth is the Kafka event stream and real-time processing logic is implemented once in Spark Structured Streaming. A small Airflow-managed batch path is retained for the externally supplied daily tariff reference feed and scheduled billing materialization.
 
-Lambda was rejected for this two-week project because separate speed and batch implementations for meter events would duplicate transformation logic, increase operational cost, and introduce consistency risk. Kafka retention/checkpointing provides a replay route without a second meter-event code path. The trade-off is that long historical reprocessing would compete with the live Spark job in this single-node demonstration environment.
+Lambda was rejected for this two-week project because separate speed and batch implementations for meter events would duplicate transformation logic, increase operational cost, and introduce consistency risk. Kafka retention/checkpointing provides a replay route without a second meter-event code path. The trade-off is that long historical reprocessing would compete with the live Spark job in this single node demonstration environment.
 
 ## Data flow
 
