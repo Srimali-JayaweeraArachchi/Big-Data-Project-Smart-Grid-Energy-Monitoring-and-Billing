@@ -58,25 +58,25 @@ flowchart LR
 
 ## Quick start
 
-1. Create the environment file:
+1. Create the environment file:-
 
    ```powershell
    Copy-Item .env.example .env
    ```
 
-2. Build the images:
+2. Build the images:-
 
    ```powershell
    docker compose build
    ```
 
-3. Start the platform:
+3. Start the platform:-
 
    ```powershell
    docker compose up -d
    ```
 
-4. Monitor startup:
+4. Monitor startup:-
 
    ```powershell
    docker compose ps
