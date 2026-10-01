@@ -1,16 +1,20 @@
 # Smart Grid Energy Monitoring & Billing
 
-EC8203 Applied Big Data Engineering mini-project implementing a lightweight, end-to-end, Kappa-oriented data platform. It combines continuous smart-meter events with a simulated daily tariff feed and serves real-time grid metrics, alerts, and a consolidated household billing report.
+EC8203 Applied Big Data Engineering mini-project implementing a lightweight, end-to-end, Kappa-oriented data platform. The system combines continuous smart-meter events with a simulated daily tariff feed to provide real-time grid metrics, alerts, and a consolidated household billing report.
 
 ## Business question
 
-What is the current grid load and renewable contribution by zone, and what will each household's bill look like once daily tariff data is applied to consumption?
+What is the current electricity load and renewable energy contribution across different zones, and what will each household's estimated bill be after applying the daily tariff to its recorded consumption?
 
 ## Architecture decision
 
-The solution is **Kappa-oriented** because the primary source of truth is the Kafka event stream and real-time processing logic is implemented once in Spark Structured Streaming. A small Airflow-managed batch path is retained for the externally supplied daily tariff reference feed and scheduled billing materialization.
+The proposed solution follows a Kappa-oriented architecture, where the Kafka event stream acts as the primary source of truth. Real-time processing of smart-meter events is handled through a single Spark Structured Streaming pipeline.
 
-Lambda was rejected for this two-week project because separate speed and batch implementations for meter events would duplicate transformation logic, increase operational cost, and introduce consistency risk. Kafka retention/checkpointing provides a replay route without a second meter-event code path. The trade-off is that long historical reprocessing would compete with the live Spark job in this single node demonstration environment.
+A lightweight Airflow-managed batch process is retained for the externally provided daily tariff reference data and for scheduled generation of the household billing report.
+
+A traditional Lambda architecture was not selected because maintaining separate batch and speed-processing pipelines for meter events would duplicate transformation logic, increase implementation and maintenance effort, and potentially lead to inconsistencies between real-time and historical results.
+
+Using Kafka retention and Spark checkpoints provides a practical mechanism for replaying events when required, without introducing a second processing path for meter data. The main trade-off is that extensive historical reprocessing may compete for resources with the live Spark streaming job in the single-node demonstration environment.
 
 ## Data flow
 
